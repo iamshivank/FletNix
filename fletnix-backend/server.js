@@ -20,7 +20,7 @@ app.use(cors({
     const allowedOrigins = [
       'http://localhost:4200',
       'http://localhost:3000',
-      'https://fletnixx.netlify.app/',
+      'https://fletnixx.netlify.app',
       process.env.CLIENT_URL
     ];
     
@@ -28,10 +28,13 @@ app.use(cors({
     const isNetlifyApp = /https:\/\/.*\.netlify\.app$/.test(origin);
     
     if (allowedOrigins.includes(origin) || isNetlifyApp) {
+      console.log('CORS allowed origin:', origin);
       return callback(null, true);
     }
     
     console.log('CORS blocked origin:', origin);
+    console.log('Allowed origins:', allowedOrigins);
+    console.log('CLIENT_URL env var:', process.env.CLIENT_URL);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true,

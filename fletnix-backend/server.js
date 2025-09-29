@@ -20,6 +20,7 @@ app.use(cors({
     const allowedOrigins = [
       'http://localhost:4200',
       'http://localhost:3000',
+      'https://fletnixx.netlify.app/',
       process.env.CLIENT_URL
     ];
     

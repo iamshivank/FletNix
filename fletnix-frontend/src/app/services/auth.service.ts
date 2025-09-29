@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
+import { environment } from '../../environments/environment';
 
 export interface LoginResponse {
   message: string;
@@ -33,7 +34,7 @@ export interface RegisterResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -90,7 +91,7 @@ export class AuthService {
       console.log('No token found');
       return false;
     }
-    
+
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const expiry = payload.exp * 1000;

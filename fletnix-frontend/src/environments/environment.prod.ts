@@ -1,5 +1,4 @@
 export const environment = {
-    production: true,
-    apiUrl: 'https://your-backend-url.com/api'
-  };
-  
+  production: true,
+  apiUrl: 'https://fletnix-backend.onrender.com/api'
+};

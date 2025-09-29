@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Content {
   _id: string;
@@ -47,19 +48,19 @@ export interface GenresResponse {
   providedIn: 'root'
 })
 export class ContentService {
-  private apiUrl = 'http://localhost:5000/api/content';
+  private apiUrl = `${environment.apiUrl}/content`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getContent(page: number = 1, limit: number = 15, search: string = '', type: string = '', genre: string = ''): Observable<ContentResponse> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
-    
+
     if (search.trim()) {
       params = params.set('search', search.trim());
     }
-    
+
     if (type.trim()) {
       params = params.set('type', type.trim());
     }

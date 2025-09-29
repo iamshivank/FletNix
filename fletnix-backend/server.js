@@ -13,12 +13,35 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: [
-    process.env.CLIENT_URL || 'http://localhost:4200',
-    /https:\/\/.*\.netlify\.app$/,
-    'http://localhost:4200'
-  ],
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:4200',
+      'http://localhost:3000',
+      process.env.CLIENT_URL
+    ];
+    
+    // Also allow any netlify.app subdomain
+    const isNetlifyApp = /https:\/\/.*\.netlify\.app$/.test(origin);
+    
+    if (allowedOrigins.includes(origin) || isNetlifyApp) {
+      return callback(null, true);
+    }
+    
+    console.log('CORS blocked origin:', origin);
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: [
+    'Origin',
+    'Content-Type',
+    'Accept',
+    'Authorization',
+    'X-Requested-With'
+  ]
 }));
 
 // Rate limiting
